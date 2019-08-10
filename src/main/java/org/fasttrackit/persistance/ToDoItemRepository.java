@@ -52,6 +52,32 @@ public class ToDoItemRepository {
        }
     }
 
+    public void deleteToDOItem(long id) throws SQLException, IOException, ClassNotFoundException {
+    String sql ="DELETE FROM to_do_list WHERE id = ?";
+
+
+        try (Connection connection = DatabaseConfiguration.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ){
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+
+        }
+    }
+
+    public void updateToDoItem(long id, boolean done) throws SQLException, IOException, ClassNotFoundException {
+        String upd ="UPDATE to_do_list SET done = ? WHERE id = ?";
+
+
+        try (Connection connection = DatabaseConfiguration.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(upd)
+        ){
+            preparedStatement.setBoolean(1, done);
+            preparedStatement.setLong(2, id);
+            preparedStatement.executeUpdate();
+
+        }
+    }
 
 }
 
