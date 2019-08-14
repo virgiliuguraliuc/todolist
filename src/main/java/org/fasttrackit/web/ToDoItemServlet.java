@@ -21,7 +21,8 @@ public class ToDoItemServlet extends HttpServlet {
 
 
     private ToDoItemService toDoItemService = new ToDoItemService();
-//endpoint
+
+    //endpoint
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -31,7 +32,7 @@ public class ToDoItemServlet extends HttpServlet {
         try {
             toDoItemService.createToDoItem(request);
         } catch (SQLException | ClassNotFoundException e) {
-           resp.sendError(500,"internal server error: " + e.getMessage());
+            resp.sendError(500, "internal server error: " + e.getMessage());
         }
 
 
@@ -48,14 +49,20 @@ public class ToDoItemServlet extends HttpServlet {
             resp.getWriter().flush();
             resp.getWriter().close();
         } catch (SQLException | ClassNotFoundException e) {
-            resp.sendError(500,"internal server error: " + e.getMessage());
+            resp.sendError(500, "internal server error: " + e.getMessage());
         }
 
 
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
 
-
-
-
+        try {
+            toDoItemService.deleteToDoItem(Long.parseLong(id));
+        } catch (SQLException | ClassNotFoundException e) {
+            resp.sendError(500, "internal server error: " + e.getMessage());
+        }
+    }
 }
