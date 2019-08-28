@@ -95,7 +95,7 @@ public class ToDoItemServlet extends HttpServlet {
     }
 //CORS cross origin resource sharing
     private void setAccessControlHeadears(HttpServletResponse resp) {
-        resp.setHeader("Acces-Control-Allow-Origin", "*" );
+        resp.setHeader("Access-Control-Allow-Origin", "*" );
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         resp.setHeader("Access-Control-Allow-Headers", "content-type");
     }
