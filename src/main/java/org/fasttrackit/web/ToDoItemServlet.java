@@ -26,6 +26,7 @@ public class ToDoItemServlet extends HttpServlet {
     //endpoint
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeadears(resp);
 
         SaveToDoItemRequest request =
                 ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(), SaveToDoItemRequest.class);
@@ -42,6 +43,8 @@ public class ToDoItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeadears(resp);
+
         try {
             List<ToDoItem> todoItems = toDoItemService.getTodoItems();
             String responseJson = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(todoItems);
@@ -58,6 +61,8 @@ public class ToDoItemServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeadears(resp);
+
         String id = req.getParameter("id");
 
         try {
@@ -69,6 +74,8 @@ public class ToDoItemServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeadears(resp);
+
         String id = req.getParameter("id");
         UptadeToDoItemRequest request = ObjectMapperConfiguration.getObjectMapper()
                 .readValue(req.getReader(), UptadeToDoItemRequest.class);
@@ -78,5 +85,18 @@ public class ToDoItemServlet extends HttpServlet {
         } catch (SQLException | ClassNotFoundException e) {
             resp.sendError(500, "internal server error: " + e.getMessage());
         }
+    }
+//pre-flight requests
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doOptions(req, resp);
+        setAccessControlHeadears(resp);
+
+    }
+//CORS cross origin resource sharing
+    private void setAccessControlHeadears(HttpServletResponse resp) {
+        resp.setHeader("Acces-Control-Allow-Origin", "*" );
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type");
     }
 }
